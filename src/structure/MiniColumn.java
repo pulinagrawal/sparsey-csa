@@ -3,6 +3,8 @@
  */
 package structure;
 
+import utils.StatUtils;
+
 /**
  * @author PulinTablet
  *
@@ -64,16 +66,9 @@ public class MiniColumn implements MiniColumnInterface{
 		for (int i = 0; i < layer2.length; i++) {
 			layer2[i].setActive(false);
 		}
-		double randomNumber=Math.random();
-		double pSum=0;
-		for (int i = 0; i < layer2.length; i++) {
-			pSum+=p[i];
-			if(randomNumber<pSum){
-				layer2[i].setActive(true);
-				break;
-			}
-		}
 		
+		int index=StatUtils.sampleDistribution(p);
+		layer2[index].setActive(true);
 	}
 	
 	int getActivePyramidal(){
