@@ -11,11 +11,12 @@ public class RandomGeneration {
 	
 	public RandomGeneration(){
 
-		double inputDimensionality = 15;// / number of features/dimensions/bits
+		double inputDimensionality = 20;// / number of features/dimensions/bits
 										// in input
-		int nMiniCol = 4;// Integer.parseInt(args[0]);
+		int nMiniCol = 5;// Integer.parseInt(args[0]);
+
 		double sparsity = 2;// Double.parseDouble(args[1]);
-		double inputActivity = .35;// Double.parseDouble(args[2])/100;
+		double inputActivity = .1;// Double.parseDouble(args[2])/100;
 		double noiseArg = 0;// Double.parseDouble(args[3]);
 
 		double noise = (double) ((noiseArg / 100) * inputDimensionality);
@@ -24,7 +25,7 @@ public class RandomGeneration {
 		int copies = 3;// Integer.parseInt(args[5]);/// number of different
 						// instances of each object in the dataset
 		double cardinality = inputActivity * inputDimensionality;
-		double nPyramidal = 8;// 100/sparsity;
+		double nPyramidal = 5;// 100/sparsity;
 		double[] input = new double[(int) inputDimensionality];
 
 		macroColumn = new MacroColumn(input, (int) nMiniCol,
@@ -34,8 +35,7 @@ public class RandomGeneration {
 				entities, copies, cardinality);
 
 		BitVector output[][] = runDataset(input, macroColumn, dataset1);
-		
-		System.out.println("Average Output Vectors");
+			System.out.println("Average Output Vectors");
 		for(int i=0;i<output.length;i++){
 			BitVector avgOuput= VectorUtils.getAvgVector(output[i]);
 			
@@ -57,7 +57,20 @@ public class RandomGeneration {
 			System.out.println();
 			
 		}
-	
+		
+		double avgOutputDiff[]=new double[output.length];
+		for(int i=0;i<output.length;i++){
+			for(int j=1;j<output[0].length;j++){
+				BitVector clone=(BitVector) output[i][0].clone();
+				clone.xor(output[i][j]);
+				double diff=clone.cardinality();
+				avgOutputDiff[i]+=diff;
+			}
+			avgOutputDiff[i]/=output[0].length-1;
+			System.out.println("Average Ouput Difference for "+output[0].length+" outputs of "+i+" is "+avgOutputDiff[i]);
+		}
+		
+
 	}
 
 	public static void runTest() {

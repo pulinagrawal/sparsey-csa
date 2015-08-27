@@ -63,10 +63,12 @@ public class Pyramidal implements PyramidalInterface{
 	
 	void calcV(){
 		int countActiveInput=0;
+		for(int i=0;i<input.length;i++){
+			countActiveInput+=input[i];
+		}
 		u=0;
 		for(int i=0;i<synapses.length;i++)
 			if(synapses[i]>0){
-				countActiveInput++;
 				u+=input[i];
 			}
 		v=countActiveInput>0?(double)u/((double)countActiveInput):0;
