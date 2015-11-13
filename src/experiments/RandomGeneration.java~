@@ -9,9 +9,9 @@ public static void main(String[] args){
 		
 		
 		double size=15;/// number of features/dimensions/bits in input
-		int nMiniCol=100;//Integer.parseInt(args[0]);
+		int nMiniCol=10;//Integer.parseInt(args[0]);
 		double sparsity=2;//Double.parseDouble(args[1]);
-		double inputActivity=.35;//Double.parseDouble(args[2])/100;
+		double inputActivity=35;//Double.parseDouble(args[2])/100;
 		double noiseArg=0;//Double.parseDouble(args[3]);
 		double noise=(double)((noiseArg/100)*size);
 		int length=5;//Integer.parseInt(args[4]); /// number of different categories of objects in dataset
@@ -19,7 +19,7 @@ public static void main(String[] args){
 		double card=inputActivity*size;
 		double nPyramidal=100/sparsity;
 		double[] input=new double[(int)size];
-		double[][] pRep=new double[length+1][(int)(nMiniCol*nPyramidal)];
+		double[][] pRep=new double[length][(int)(nMiniCol*nPyramidal)];
 		
 		MacroColumn macroColumn= new MacroColumn(input, (int)nMiniCol, (int)nPyramidal);
 		
