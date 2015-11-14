@@ -7,15 +7,15 @@ import cern.colt.bitvector.BitVector;
 public class SPRobustnessTest {
 	public static void main(String[] args){
 
-		boolean longRepitions=false;
-		int repitions=Integer.parseInt(args[0]);
+		boolean delayedRepition=true;
+		int repitions=3;
 		double size=500;/// number of features/dimensions/bits in input
 		int representationDimensionality=2048;
 		double sparsity=.02;//percentage Double.parseDouble(args[1]);
 		double inputActivity=.35;//Double.parseDouble(args[2])/100;
 		double noiseArg=0;//Double.parseDouble(args[3]);
 		double noise=(double)((noiseArg/100)*size);
-		int length=1000;//Integer.parseInt(args[4]); /// number of different categories of objects in dataset
+		int length=1;//Integer.parseInt(args[4]); /// number of different categories of objects in dataset
 		double card=inputActivity*size;
 		double[] input=new double[(int)size];
 		double[][] pRep=new double[length][(int)(representationDimensionality)];
@@ -52,7 +52,7 @@ public class SPRobustnessTest {
 
 
 		//Run system on dataset
-		if (longRepitions==false){
+		if (delayedRepition==false){
 			for (int i = 0; i < dataset1.length; i++) {
 
 
@@ -68,10 +68,10 @@ public class SPRobustnessTest {
 					macroColumn.run();	// execute
 
 				}		
-					macroColumn.learn();
-					macroColumn.setupForNextStep();
-
 				finalRep[i]=macroColumn.representation.clone();
+				macroColumn.learn();
+				macroColumn.setupForNextStep();
+
 			}
 		}
 		else{
@@ -100,6 +100,7 @@ public class SPRobustnessTest {
 		for(int i=0;i<dataset1.length;i++){
 			for(int j=0;j<finalRep[0].length;j++)
 				totalError+=Math.abs(finalRep[i][j]-pRep[i][j]);
+			System.out.println(totalError);
 		}
 
 		System.out.println("Error is "+ ((double)totalError/dataset1.length));
