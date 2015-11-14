@@ -5,8 +5,8 @@ import utils.InputUtils;
 import cern.colt.bitvector.BitVector;
 
 public class SPRobustnessTest {
-public static void main(String[] args){
-		
+	public static void main(String[] args){
+
 		boolean longRepitions=false;
 		int repitions=5;
 		double size=500;/// number of features/dimensions/bits in input
@@ -21,18 +21,18 @@ public static void main(String[] args){
 		double[] input=new double[(int)size];
 		double[][] pRep=new double[length][(int)(nMiniCol*nPyramidal)];
 		double[][] finalRep=new double[length][(int)(nMiniCol*nPyramidal)];
-		
+
 		MacroColumn macroColumn= new MacroColumn(input, (int)nMiniCol, (int)nPyramidal);
-		
+
 		//dataset with NxM input patterns with N different categories of object with M instances of each
 		BitVector[] dataset1=new BitVector[(int)length];
-		
+
 		// Initialize Dataset Array
 		for(int i=0;i<dataset1.length;i++){
 			dataset1[i]=new BitVector((int) size);
 			dataset1[i].clear();
-			}
-		
+		}
+
 		// Setup Dataset / Build Datset
 		for(int i=0;i<dataset1.length;i++){
 			for(int j=0;j<size;j++){
@@ -40,65 +40,65 @@ public static void main(String[] args){
 					dataset1[i].set(j);
 			}
 		}
-		
 
-		
+
+
 		//Initialize for comparision
 		for (int i = 0; i < pRep.length; i++) {
 			for(int j=0;j<pRep[0].length;j++)
-			pRep[i][j]=0;
+				pRep[i][j]=0;
 		}
-		
-		
+
+
 		//Run system on dataset
 		if (longRepitions==false){
 			for (int i = 0; i < dataset1.length; i++) {
-					
-					
-					InputUtils.setInput(input, dataset1[i]);
-		//			System.out.print(i%dupl+",");
-					
+
+
+				InputUtils.setInput(input, dataset1[i]);
+				//			System.out.print(i%dupl+",");
+
+				macroColumn.run();	// execute
+				pRep[i]=macroColumn.representation.clone();
+
+				for(int j=0;j<repitions-1;j++){
+					macroColumn.learn();
+					macroColumn.setupForNextStep();
 					macroColumn.run();	// execute
-					pRep[i]=macroColumn.representation.clone();
 
-					for(int j=0;j<repitions-1;j++){
-						macroColumn.learn();
-						macroColumn.setupForNextStep();
-						macroColumn.run();	// execute
+				}		
 
-					}		
-
-					finalRep[i]=macroColumn.representation.clone();
+				finalRep[i]=macroColumn.representation.clone();
 			}
-			}
+		}
 		else{
-			
-					
+
+
 			for(int j=0;j<repitions;j++){
 				for (int i = 0; i < dataset1.length; i++) {
-						InputUtils.setInput(input, dataset1[i]);
-			//			System.out.print(i%dupl+",");
-						
-						macroColumn.run();	// execute
-						if(j==0)
-							pRep[i]=macroColumn.representation.clone();
+					InputUtils.setInput(input, dataset1[i]);
+					//			System.out.print(i%dupl+",");
+
+					macroColumn.run();	// execute
+					if(j==0)
+						pRep[i]=macroColumn.representation.clone();
 
 
-						finalRep[i]=macroColumn.representation.clone();
-						macroColumn.learn();
-						macroColumn.setupForNextStep();
+					finalRep[i]=macroColumn.representation.clone();
+					macroColumn.learn();
+					macroColumn.setupForNextStep();
+
+				}
+				//Run system on test set
 
 			}
-			//Run system on test set
-				
-	}
 		}
-			int totalError=0;
-			for(int i=0;i<dataset1.length;i++){
-				for(int j=0;j<finalRep[0].length;j++)
-					totalError+=Math.abs(finalRep[i][j]-pRep[i][j]);
-			}
+		int totalError=0;
+		for(int i=0;i<dataset1.length;i++){
+			for(int j=0;j<finalRep[0].length;j++)
+				totalError+=Math.abs(finalRep[i][j]-pRep[i][j]);
+		}
 
-			System.out.println("Error is "+ ((double)totalError/dataset1.length));
-}
+		System.out.println("Error is "+ ((double)totalError/dataset1.length));
+	}
 }
