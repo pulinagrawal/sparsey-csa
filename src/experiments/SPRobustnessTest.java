@@ -10,17 +10,18 @@ public class SPRobustnessTest {
 		boolean longRepitions=false;
 		int repitions=5;
 		double size=500;/// number of features/dimensions/bits in input
-		int nMiniCol=2048;//Integer.parseInt(args[0]);
+		double nPyramidal=2048;
 		double sparsity=.02;//percentage Double.parseDouble(args[1]);
+		int nMiniCol=(int) (nPyramidal*sparsity);//Integer.parseInt(args[0]);
 		double inputActivity=.35;//Double.parseDouble(args[2])/100;
 		double noiseArg=0;//Double.parseDouble(args[3]);
 		double noise=(double)((noiseArg/100)*size);
 		int length=1000;//Integer.parseInt(args[4]); /// number of different categories of objects in dataset
 		double card=inputActivity*size;
-		double nPyramidal=nMiniCol/sparsity;
 		double[] input=new double[(int)size];
-		double[][] pRep=new double[length][(int)(nMiniCol*nPyramidal)];
-		double[][] finalRep=new double[length][(int)(nMiniCol*nPyramidal)];
+		System.out.println((int)nMiniCol);
+		double[][] pRep=new double[length][(int)(nPyramidal)];
+		double[][] finalRep=new double[length][(int)(nPyramidal)];
 
 		MacroColumn macroColumn= new MacroColumn(input, (int)nMiniCol, (int)nPyramidal);
 
@@ -67,6 +68,8 @@ public class SPRobustnessTest {
 					macroColumn.run();	// execute
 
 				}		
+					macroColumn.learn();
+					macroColumn.setupForNextStep();
 
 				finalRep[i]=macroColumn.representation.clone();
 			}

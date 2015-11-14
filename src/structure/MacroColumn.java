@@ -44,7 +44,6 @@ public class MacroColumn implements MacroColumnInterface{
 			g+=miniCol.firstFirePyramidal();
 		} 
 		g/=(double)miniColumns.length;
-		System.out.println("G:"+g);
 	}
 	
 	void calcN(double cG){
