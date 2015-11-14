@@ -8,22 +8,22 @@ public class SPRobustnessTest {
 	public static void main(String[] args){
 
 		boolean longRepitions=false;
-		int repitions=5;
+		int repitions=Integer.parseInt(args[0]);
 		double size=500;/// number of features/dimensions/bits in input
-		double nPyramidal=2048;
+		int representationDimensionality=2048;
 		double sparsity=.02;//percentage Double.parseDouble(args[1]);
-		int nMiniCol=(int) (nPyramidal*sparsity);//Integer.parseInt(args[0]);
 		double inputActivity=.35;//Double.parseDouble(args[2])/100;
 		double noiseArg=0;//Double.parseDouble(args[3]);
 		double noise=(double)((noiseArg/100)*size);
 		int length=1000;//Integer.parseInt(args[4]); /// number of different categories of objects in dataset
 		double card=inputActivity*size;
 		double[] input=new double[(int)size];
-		System.out.println((int)nMiniCol);
-		double[][] pRep=new double[length][(int)(nPyramidal)];
-		double[][] finalRep=new double[length][(int)(nPyramidal)];
+		double[][] pRep=new double[length][(int)(representationDimensionality)];
+		double[][] finalRep=new double[length][(int)(representationDimensionality)];
 
-		MacroColumn macroColumn= new MacroColumn(input, (int)nMiniCol, (int)nPyramidal);
+		int nMiniCol=(int) (representationDimensionality*sparsity);//Integer.parseInt(args[0]);
+		int nPyramidalPerMiniCol=(int) (representationDimensionality/nMiniCol);//Integer.parseInt(args[0]);
+		MacroColumn macroColumn= new MacroColumn(input, (int)nMiniCol, (int)nPyramidalPerMiniCol);
 
 		//dataset with NxM input patterns with N different categories of object with M instances of each
 		BitVector[] dataset1=new BitVector[(int)length];
