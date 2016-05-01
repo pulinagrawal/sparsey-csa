@@ -92,7 +92,6 @@ public class MiniColumn implements MiniColumnInterface{
 			layer2[i].setActive(false);
 		}
 	}
-
 	@Override
 	public void recieveInputs() {
 		// TODO Auto-generated method stub

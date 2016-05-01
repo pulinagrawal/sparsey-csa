@@ -11,9 +11,9 @@ public class RandomGeneration {
 	
 	public RandomGeneration(){
 
-		double inputDimensionality = 20;// / number of features/dimensions/bits
+		double inputDimensionality = 200;// / number of features/dimensions/bits
 										// in input
-		int nMiniCol = 5;// Integer.parseInt(args[0]);
+		int nMiniCol = 100;// Integer.parseInt(args[0]);
 
 		double sparsity = 2;// Double.parseDouble(args[1]);
 		double inputActivity = .1;// Double.parseDouble(args[2])/100;
@@ -25,7 +25,7 @@ public class RandomGeneration {
 		int copies = 3;// Integer.parseInt(args[5]);/// number of different
 						// instances of each object in the dataset
 		double cardinality = inputActivity * inputDimensionality;
-		double nPyramidal = 5;// 100/sparsity;
+		double nPyramidal =  100/sparsity;
 		double[] input = new double[(int) inputDimensionality];
 
 		macroColumn = new MacroColumn(input, (int) nMiniCol,
@@ -35,6 +35,7 @@ public class RandomGeneration {
 				entities, copies, cardinality);
 
 		BitVector output[][] = runDataset(input, macroColumn, dataset1);
+		VectorUtils.printVector(output[0][0]);
 			System.out.println("Average Output Vectors");
 		for(int i=0;i<output.length;i++){
 			BitVector avgOuput= VectorUtils.getAvgVector(output[i]);
