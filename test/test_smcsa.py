@@ -10,7 +10,7 @@ from src.structure.ncsa import SegmentedMacrocolumn
 from hypothesis import given, strategies as st
 import torch
 
-np.random.seed(1111)
+#np.random.seed(1111)
 INPUT_SIZE = 512
 
 def random_input(size):
@@ -65,12 +65,16 @@ class TestSMCSA(unittest.TestCase):
         input = random_input(512)
         output1 = m.run(input).flatten()
         
-        for i in tqdm(range(100)):
+        for i in tqdm(range(1000)):
             input_others = random_input(512)
             _ = m.run(input_others).flatten()
 
         output2 = m.run(input).flatten()
 
+        # TODO Consider making similarity checking an api call.
         hamming = sum(abs(output2-output1))
 
         assert hamming < len(output1)*.005
+
+    # TODO Create a test case that tests similarity of representations
+    # for two inputs from outputs of ResNet50 from similar and different images

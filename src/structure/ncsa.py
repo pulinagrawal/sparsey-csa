@@ -35,7 +35,7 @@ class SegmentedMacrocolumn(object):
         n_init_segments = 2
         n_synapses = 30
         lr = 1.
-        similarity_threshold = .95
+        similarity_threshold = .95 # this value makes or breaks the test cases.
         inp = torch.rand((inp_size, ))
         class S:
             pass
