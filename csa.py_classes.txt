@@ -1,0 +1,11 @@
+@startuml
+
+skinparam class {
+    BackgroundColor White
+    ArrowColor Grey
+    BorderColor Black
+}
+title csa.py
+
+
+@enduml
